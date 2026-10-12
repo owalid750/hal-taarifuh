@@ -3,6 +3,7 @@ import { quizQuestions } from './quizData.js';
 import { DesertScene } from './scene.js';
 import { ambientAudio } from './audio.js';
 import { openShareModal, closeShareModal, downloadCardImage, copyShareText } from './share.js';
+import { annotateTerms } from './glossary.js';
 import confetti from 'canvas-confetti';
 
 class App {
@@ -84,12 +85,9 @@ class App {
     // المحطة التالية (على اليمين)
     document.getElementById('nextStationBtn').addEventListener('click', () => {
       if (this.currentStationIndex < stationsData.length - 1) {
-        // تشغيل صوت صلي على النبي
-        ambientAudio.playSalawat();
         this.goToStation(this.currentStationIndex + 1);
       } else {
         // عند انتهاء المحطات: فتح الاختبار التفاعلي
-        ambientAudio.playSalawat();
         this.startQuiz();
       }
     });
@@ -145,7 +143,6 @@ class App {
         if (e.key === 'ArrowRight') {
           // اليمين = التالي
           if (this.currentStationIndex < stationsData.length - 1) {
-            ambientAudio.playSalawat();
             this.goToStation(this.currentStationIndex + 1);
           }
         } else if (e.key === 'ArrowLeft') {
@@ -170,7 +167,6 @@ class App {
     restartBtn.style.display = 'inline-flex';
 
     this.goToStation(0);
-    ambientAudio.playSalawat();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -228,7 +224,14 @@ class App {
     document.getElementById('stationPeriodText').textContent = station.period;
     document.getElementById('stationTitle').textContent = station.title;
     document.getElementById('stationTagline').textContent = station.tagline;
-    document.getElementById('stationContentBody').innerHTML = station.content;
+    const contentBody = document.getElementById('stationContentBody');
+    contentBody.innerHTML = station.content;
+    [
+      document.getElementById('stationPeriodText'),
+      document.getElementById('stationTitle'),
+      document.getElementById('stationTagline'),
+    ].forEach(annotateTerms);
+    annotateTerms(contentBody);
 
     // Button states
     const prevBtn = document.getElementById('prevStationBtn');
