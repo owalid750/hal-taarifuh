@@ -1,0 +1,1029 @@
+/* --- Google Fonts: Amiri & Scheherazade New & Reem Kufi --- */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@500;600;700&family=Scheherazade+New:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap');
+
+:root {
+  --sand-50: #faf6ee;
+  --sand-100: #f4ecdc;
+  --sand-200: #e8d7b9;
+  --sand-300: #d9bf92;
+  --sand-400: #cba46c;
+  --sand-500: #bf8d4a;
+  --sand-600: #a97539;
+  --sand-700: #88592d;
+  --sand-800: #6c4627;
+  --sand-900: #422914;
+
+  --gold-primary: #d4a359;
+  --gold-light: #f3dfb5;
+  --gold-dark: #996e2b;
+  --parchment-bg: #f8f3e6;
+  --parchment-card: #fffbf2;
+  --ink-dark: #281e13;
+  --ink-muted: #5e4a36;
+  --emerald-accent: #2c5946;
+  --ruby-accent: #8b3a3a;
+  
+  --border-gold: rgba(203, 164, 108, 0.45);
+  --box-shadow-antique: 0 16px 36px -10px rgba(66, 41, 20, 0.18), 0 0 0 1px rgba(203, 164, 108, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  direction: rtl;
+  font-family: 'Amiri', 'Tajawal', serif;
+  background-color: #dfba86;
+  color: var(--ink-dark);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* 3D Canvas Background */
+#webgl-canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* App Wrapper */
+.app-container {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header & Controls */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(180deg, rgba(53, 34, 16, 0.75) 0%, rgba(53, 34, 16, 0) 100%);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  transition: all 0.3s ease;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--sand-100);
+  text-decoration: none;
+}
+
+.brand-badge .logo-crescent {
+  font-size: 1.5rem;
+  color: var(--gold-light);
+  filter: drop-shadow(0 0 8px rgba(243, 223, 181, 0.6));
+}
+
+.brand-badge h1 {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #fff6e5;
+}
+
+.brand-badge span {
+  font-size: 0.85rem;
+  color: var(--sand-300);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(243, 223, 181, 0.4);
+  color: #fffbf2;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.icon-btn:hover {
+  background: rgba(212, 163, 89, 0.35);
+  border-color: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+/* Landing / Hero Screen */
+.hero-view {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  position: relative;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hero-view.hidden-view {
+  display: none;
+}
+
+.hero-parchment-frame {
+  max-width: 760px;
+  background: rgba(254, 250, 240, 0.88);
+  border: 2px solid var(--sand-400);
+  border-radius: 20px;
+  padding: 3.5rem 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(45, 27, 10, 0.35), inset 0 0 40px rgba(203, 164, 108, 0.25);
+  position: relative;
+  backdrop-filter: blur(12px);
+  outline: 1px dashed rgba(169, 117, 57, 0.4);
+  outline-offset: -12px;
+}
+
+.islamic-header-ornament {
+  font-size: 2.5rem;
+  color: var(--sand-600);
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+}
+
+.hero-subtitle {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.15rem;
+  color: var(--sand-700);
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.hero-title {
+  font-family: 'Reem Kufi', serif;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  color: var(--sand-900);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.hero-motto {
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+  color: var(--sand-700);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.hero-desc {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--ink-muted);
+  max-width: 620px;
+  margin: 0 auto 2.5rem auto;
+}
+
+.hero-meta-badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.meta-badge {
+  background: rgba(232, 215, 185, 0.45);
+  border: 1px solid var(--sand-400);
+  border-radius: 9999px;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.95rem;
+  color: var(--sand-900);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #a97539 0%, #6c4627 100%);
+  color: #fffbf2;
+  border: 2px solid #e8d7b9;
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  padding: 1.1rem 3.5rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(66, 41, 20, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.primary-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 32px rgba(66, 41, 20, 0.5);
+  border-color: #ffd99e;
+}
+
+.primary-btn:active {
+  transform: translateY(1px);
+}
+
+/* Journey View & Stations */
+.journey-view {
+  min-height: 100vh;
+  padding: 6rem 1.5rem 5rem 1.5rem;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.5s ease;
+}
+
+.journey-view.active-view {
+  display: flex;
+}
+
+/* Stepper Progress Bar */
+.stepper-container {
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 2rem;
+  background: rgba(255, 252, 245, 0.9);
+  border: 1px solid var(--sand-300);
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 8px 24px rgba(66, 41, 20, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.stepper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--sand-800);
+  font-weight: 600;
+}
+
+.stepper-dots {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  gap: 0.5rem;
+}
+
+.stepper-line {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  right: 15px;
+  height: 3px;
+  background: var(--sand-200);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.stepper-line-fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background: var(--gold-primary);
+  transition: width 0.4s ease;
+}
+
+.step-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--sand-100);
+  border: 2px solid var(--sand-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-family: 'Tajawal', sans-serif;
+  color: var(--sand-700);
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.step-dot.active {
+  background: var(--sand-700);
+  color: #fffbf2;
+  border-color: var(--gold-light);
+  transform: scale(1.18);
+  box-shadow: 0 0 12px rgba(169, 117, 57, 0.6);
+}
+
+.step-dot.completed {
+  background: var(--sand-400);
+  color: #fff;
+  border-color: var(--sand-500);
+}
+
+/* Station Main Manuscript Card */
+.station-card-container {
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+}
+
+.station-manuscript {
+  background: #fbf7ee;
+  border: 2px solid var(--sand-400);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  box-shadow: var(--box-shadow-antique);
+  position: relative;
+  outline: 1px dashed rgba(169, 117, 57, 0.4);
+  outline-offset: -12px;
+  animation: fadeInStation 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInStation {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Manuscript Corner Ornaments */
+.station-manuscript::before,
+.station-manuscript::after {
+  content: "✤";
+  position: absolute;
+  font-size: 1.4rem;
+  color: var(--sand-500);
+}
+.station-manuscript::before { top: 18px; right: 18px; }
+.station-manuscript::after { bottom: 18px; left: 18px; }
+
+.station-header-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 1px solid var(--sand-200);
+  padding-bottom: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.station-badge-pill {
+  background: rgba(169, 117, 57, 0.15);
+  color: var(--sand-800);
+  font-weight: 700;
+  border: 1px solid var(--sand-400);
+  padding: 0.35rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+}
+
+.station-period-pill {
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.station-heading {
+  font-family: 'Reem Kufi', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--sand-900);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.station-tagline {
+  font-family: 'Scheherazade New', serif;
+  font-size: 1.4rem;
+  color: var(--sand-700);
+  margin-bottom: 1.75rem;
+}
+
+/* Interior Content Typography */
+.lead-text {
+  font-size: 1.25rem;
+  line-height: 1.9;
+  color: var(--sand-900);
+  margin-bottom: 1.5rem;
+}
+
+.quran-quote {
+  background: rgba(232, 215, 185, 0.35);
+  border-right: 4px solid var(--sand-600);
+  border-radius: 8px 0 0 8px;
+  padding: 1.25rem 1.75rem;
+  margin: 1.75rem 0;
+  text-align: center;
+}
+
+.quran-quote .ayah {
+  font-family: 'Scheherazade New', serif;
+  font-size: 1.8rem;
+  color: var(--sand-900);
+  line-height: 2;
+  margin-bottom: 0.4rem;
+}
+
+.quran-quote .surah {
+  font-size: 0.95rem;
+  color: var(--sand-700);
+}
+
+.card-section {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--sand-300);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.section-title {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.25rem;
+  color: var(--sand-800);
+  margin-bottom: 0.75rem;
+}
+
+.genealogy {
+  font-size: 1.2rem;
+  line-height: 2;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card-item {
+  background: rgba(244, 236, 220, 0.55);
+  border: 1px solid var(--sand-300);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.item-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--sand-600);
+  text-transform: uppercase;
+}
+
+.item-value {
+  font-size: 1.1rem;
+  color: var(--sand-900);
+  line-height: 1.6;
+}
+
+/* Names Cloud */
+.names-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.name-tag {
+  background: #fff;
+  border: 1px solid var(--sand-400);
+  border-radius: 9999px;
+  padding: 0.4rem 1.1rem;
+  font-size: 1.1rem;
+  color: var(--sand-800);
+  font-family: 'Scheherazade New', serif;
+  font-weight: 700;
+  box-shadow: 0 2px 5px rgba(66, 41, 20, 0.08);
+}
+
+/* Wives Grid */
+.wives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.wife-card {
+  background: #fff;
+  border: 1px solid var(--sand-300);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.wife-card .num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--sand-200);
+  color: var(--sand-800);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.wife-card div {
+  display: flex;
+  flex-direction: column;
+}
+
+.wife-card strong {
+  font-size: 1.05rem;
+  color: var(--sand-900);
+}
+
+.wife-card small {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+/* Poetry & Hadith */
+.poetry-card {
+  background: rgba(244, 236, 220, 0.4);
+  border: 1px dashed var(--sand-500);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  margin: 1.75rem 0;
+}
+
+.poetry-title {
+  color: var(--sand-700);
+  margin-bottom: 0.75rem;
+  font-family: 'Reem Kufi', sans-serif;
+}
+
+.verse {
+  font-family: 'Scheherazade New', serif;
+  font-size: 1.35rem;
+  color: var(--sand-900);
+  line-height: 2.1;
+}
+
+.hadith-box {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--sand-400);
+  border-radius: 10px;
+  padding: 1.2rem;
+  font-size: 1.2rem;
+  font-family: 'Scheherazade New', serif;
+  text-align: center;
+  color: var(--ruby-accent);
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+/* Signs of Love */
+.signs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.sign-card {
+  background: #fff;
+  border: 1px solid var(--sand-300);
+  border-radius: 12px;
+  padding: 1.25rem;
+  position: relative;
+  transition: transform 0.25s ease;
+}
+
+.sign-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--sand-500);
+}
+
+.sign-card.highlight-sign {
+  background: #fdf8ed;
+  border: 2px solid var(--sand-500);
+}
+
+.sign-num {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--sand-600);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.sign-card h4 {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.15rem;
+  color: var(--sand-800);
+  margin-bottom: 0.5rem;
+  padding-left: 2rem;
+}
+
+.sign-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink-muted);
+}
+
+.final-dua {
+  background: linear-gradient(135deg, #f7efe1 0%, #ecd9ba 100%);
+  border: 2px solid var(--sand-400);
+  border-radius: 14px;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.final-dua p {
+  font-family: 'Scheherazade New', serif;
+  font-size: 1.55rem;
+  line-height: 2.1;
+  color: var(--sand-900);
+  font-weight: 600;
+}
+
+.reference-tag {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--sand-700);
+}
+
+/* Timeline steps */
+.timeline-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.step-card {
+  display: flex;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid var(--sand-300);
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+
+.step-marker {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--sand-700);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.step-body strong {
+  display: block;
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.15rem;
+  color: var(--sand-900);
+  margin-bottom: 0.3rem;
+}
+
+.step-body p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink-muted);
+}
+
+.styled-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.styled-list li {
+  position: relative;
+  padding-right: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.styled-list li::before {
+  content: "✦";
+  position: absolute;
+  right: 0;
+  color: var(--sand-600);
+}
+
+.info-banner {
+  background: #fbf1dc;
+  border: 1px solid var(--sand-400);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-top: 1rem;
+}
+
+/* Station Footer Controls */
+.station-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--sand-200);
+}
+
+.nav-buttons-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.sec-btn {
+  background: #fff;
+  border: 1px solid var(--sand-400);
+  color: var(--sand-800);
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sec-btn:hover {
+  background: var(--sand-100);
+  border-color: var(--sand-600);
+}
+
+.share-trigger-btn {
+  background: linear-gradient(135deg, #cba46c 0%, #a97539 100%);
+  color: #fff;
+  border: 1px solid var(--sand-200);
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(169, 117, 57, 0.35);
+  transition: all 0.25s ease;
+}
+
+.share-trigger-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(169, 117, 57, 0.5);
+}
+
+/* Share Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 20, 10, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-window {
+  background: #fbf7ee;
+  border: 2px solid var(--sand-400);
+  border-radius: 20px;
+  max-width: 580px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  position: relative;
+  padding: 2rem;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--sand-600);
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.6rem;
+  color: var(--sand-900);
+}
+
+.modal-header p {
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+}
+
+/* Shareable Manuscript Card (Render Target for PNG) */
+.share-card-render {
+  background: #fffdf7;
+  border: 3px double var(--sand-500);
+  border-radius: 16px;
+  padding: 2.25rem 2rem;
+  margin: 0 auto 1.5rem auto;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(66, 41, 20, 0.15);
+  background-image: radial-gradient(var(--sand-200) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.card-inner-border {
+  border: 1px dashed var(--sand-400);
+  border-radius: 10px;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.card-top-seal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--sand-300);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.card-top-seal .logo-tag {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 0.95rem;
+  color: var(--sand-700);
+  font-weight: 700;
+}
+
+.card-station-badge {
+  font-size: 0.8rem;
+  background: var(--sand-200);
+  color: var(--sand-900);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+}
+
+.card-title-text {
+  font-family: 'Reem Kufi', serif;
+  font-size: 1.65rem;
+  color: var(--sand-900);
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.card-period-text {
+  font-size: 0.9rem;
+  color: var(--sand-600);
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.card-quote-box {
+  background: rgba(244, 236, 220, 0.45);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  font-family: 'Scheherazade New', serif;
+  font-size: 1.3rem;
+  line-height: 1.9;
+  text-align: center;
+  color: var(--sand-900);
+  margin-bottom: 1.25rem;
+}
+
+.share-highlights-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.share-highlight-chip {
+  background: #fff;
+  border: 1px solid var(--sand-300);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-bottom-footer {
+  text-align: center;
+  border-top: 1px solid var(--sand-200);
+  padding-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--sand-600);
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-actions-bar {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .top-nav {
+    padding: 0.75rem 1rem;
+  }
+  .brand-badge span {
+    display: none;
+  }
+  .hero-parchment-frame {
+    padding: 2.5rem 1.5rem;
+  }
+  .station-manuscript {
+    padding: 2rem 1.25rem;
+  }
+  .station-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .nav-buttons-group {
+    justify-content: space-between;
+  }
+  .share-trigger-btn {
+    justify-content: center;
+  }
+}

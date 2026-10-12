@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>هل تعرفه؟ — رحلة تفاعلية في سيرة النبي ﷺ</title>
+  <meta name="description" content="رحلة إيمانية تفاعلية في سيرة الحبيب المصطفى محمد ﷺ مستوحاة من المخطوطات القديمة والصحراء العربية" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cba46c'><path d='M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm1-5.5a2 2 0 0 0-4 0v1h4z'/></svg>" />
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <!-- 3D Desert Canvas Container -->
+  <div id="webgl-canvas-container"></div>
+
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <header class="top-nav">
+      <a href="#" id="homeLink" class="brand-badge">
+        <span class="logo-crescent">☽</span>
+        <div>
+          <h1>هل تعرفه؟</h1>
+          <span>في سيرة النبي ﷺ</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <button id="audioToggleBtn" class="icon-btn" title="تشغيل / كتم صوت نسيم الصحراء">
+          <span id="audioIcon">🔈</span>
+          <span id="audioStatusText">صوت الصحراء: مغلق</span>
+        </button>
+        <button id="restartJourneyBtn" class="icon-btn" style="display: none;">
+          <span>العودة للبداية ↺</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 1. Hero Landing View -->
+    <main id="heroView" class="hero-view">
+      <div class="hero-parchment-frame">
+        <div class="islamic-header-ornament">﷽</div>
+        <div class="hero-subtitle">في ذكرى مولد رسول الله ﷺ</div>
+        <h2 class="hero-title">هل تعرفه؟</h2>
+        <div class="hero-motto">«فإذا عرفته أحببته واتبعته»</div>
+        <p class="hero-desc">
+          رحلة بصرية وإيمانية هادئة في سيرة الحبيب المصطفى ﷺ، نسبه، طفولته، أمهات المؤمنين، بعثته الشريفة، هجرته، وفاته، وعلامات محبته السبع؛ لتتعرف عليه كما لم تعرفه من قبل.
+        </p>
+
+        <div class="hero-meta-badges">
+          <div class="meta-badge">
+            <span>⏱️ مدة الرحلة:</span>
+            <strong>١٠ - ١٥ دقيقة قراءة وتأمل</strong>
+          </div>
+          <div class="meta-badge">
+            <span>📜 المحطات:</span>
+            <strong>٨ محطات إيمانية متكاملة</strong>
+          </div>
+          <div class="meta-badge">
+            <span>🎴 بطاقات:</span>
+            <strong>مشاركة وتنزيل بطاقات تراثية</strong>
+          </div>
+        </div>
+
+        <button id="startJourneyBtn" class="primary-btn">
+          ابدأ الرحلة المباركة ✦
+        </button>
+      </div>
+    </main>
+
+    <!-- 2. Journey View (Single Page Interactive Stepper) -->
+    <section id="journeyView" class="journey-view">
+      <!-- Progress Stepper -->
+      <div class="stepper-container">
+        <div class="stepper-header">
+          <span>مسار الرحلة النبوية</span>
+          <span id="stepperCounter">المحطة ١ من ٨</span>
+        </div>
+        <div class="stepper-dots">
+          <div class="stepper-line">
+            <div id="stepperLineFill" class="stepper-line-fill"></div>
+          </div>
+          <div id="stepperDotsWrapper" class="stepper-dots-wrapper" style="display: contents;">
+            <!-- Generated Dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Station Card Content -->
+      <article class="station-card-container">
+        <div id="stationManuscript" class="station-manuscript">
+          <div class="station-header-meta">
+            <span id="stationBadge" class="station-badge-pill">المحطة الأولى</span>
+            <span id="stationPeriod" class="station-period-pill">
+              <span>📍</span> <span id="stationPeriodText">عام الفيل 571م</span>
+            </span>
+          </div>
+
+          <h2 id="stationTitle" class="station-heading">المولد والنسب الشريف</h2>
+          <div id="stationTagline" class="station-tagline">فمن هو رسول الله ﷺ؟</div>
+
+          <div id="stationContentBody" class="station-content-body">
+            <!-- Injected from data.js -->
+          </div>
+
+          <div class="station-actions">
+            <div class="nav-buttons-group">
+              <button id="prevStationBtn" class="sec-btn">
+                <span>→ المحطة السابقة</span>
+              </button>
+              <button id="nextStationBtn" class="sec-btn" style="font-weight: bold; background: var(--sand-200);">
+                <span>المحطة التالية ←</span>
+              </button>
+            </div>
+
+            <button id="openShareModalBtn" class="share-trigger-btn">
+              <span>📜 شارك كـ كارد تراثي</span>
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <!-- Share Heritage Card Modal Overlay -->
+  <div id="shareModal" class="modal-overlay">
+    <div class="modal-window">
+      <button id="closeModalBtn" class="modal-close-btn" aria-label="إغلاق">✕</button>
+      
+      <div class="modal-header">
+        <h3>بطاقة المحطة النبوية</h3>
+        <p>يمكنك تحميلها كصورة عالية الدقة أو نسخ اقتباس المحطة للمشاركة</p>
+      </div>
+
+      <!-- The card node to capture as PNG -->
+      <div id="shareCardPreview" class="share-card-render">
+        <div class="card-inner-border">
+          <div class="card-top-seal">
+            <span class="logo-tag">هل تعرفه؟ ﷺ</span>
+            <span id="cardBadge" class="card-station-badge">المحطة الأولى</span>
+          </div>
+
+          <h4 id="cardTitle" class="card-title-text">المولد والنسب الشريف</h4>
+          <div id="cardPeriod" class="card-period-text">عام الفيل 571م</div>
+
+          <div id="cardQuote" class="card-quote-box">
+            "ولد الهدى فالكائنات ضياء"
+          </div>
+
+          <div id="cardHighlights" class="share-highlights-wrap">
+            <!-- Injected dynamically -->
+          </div>
+
+          <div class="card-bottom-footer">
+            <span>سيرة رسول الله ﷺ</span>
+            <span>روضة الأنوار — صفي الرحمن المباركفوري</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions-bar">
+        <button id="downloadCardBtn" class="primary-btn" style="padding: 0.8rem 1.8rem; font-size: 1.05rem;">
+          <span>💾 تحميل كصورة (PNG)</span>
+        </button>
+        <button id="copyCardTextBtn" class="sec-btn">
+          <span>📋 نسخ النص</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
