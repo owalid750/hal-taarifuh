@@ -1257,3 +1257,410 @@ html, body {
   gap: 1rem;
   flex-wrap: wrap;
 }
+
+
+/* Inline plain-language explanations for less familiar terms */
+.term-meaning {
+  color: var(--ink-muted);
+  background: rgba(232, 215, 185, 0.42);
+  border-radius: 4px;
+  padding: 0 0.18em;
+  font-size: 0.88em;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+/* Mobile layout: use the viewport width without clipping text or controls */
+@media (max-width: 768px) {
+  html,
+  body {
+    min-width: 320px;
+    min-height: 100%;
+    height: auto;
+  }
+
+  .app-container,
+  .hero-view,
+  .journey-view,
+  .quiz-view,
+  .station-card-container,
+  .quiz-card-container {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .top-nav {
+    gap: 0.5rem;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .brand-badge {
+    min-width: 0;
+    gap: 0.4rem;
+  }
+
+  .brand-badge h1 {
+    font-size: 1rem;
+  }
+
+  .nav-actions {
+    min-width: 0;
+    gap: 0.35rem;
+  }
+
+  .icon-btn {
+    min-height: 40px;
+    max-width: 100%;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .hero-view {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 5rem 0.75rem 1.25rem;
+  }
+
+  .hero-parchment-frame {
+    width: 100%;
+    min-width: 0;
+    max-width: 760px;
+    padding: clamp(1.35rem, 5vw, 2.5rem) clamp(0.85rem, 4vw, 1.5rem);
+    overflow-wrap: anywhere;
+  }
+
+  .islamic-header-ornament {
+    max-width: 100%;
+    font-size: clamp(1.55rem, 7vw, 2.25rem);
+    overflow-wrap: anywhere;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(0.95rem, 4vw, 1.15rem);
+    letter-spacing: 0;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 10vw, 3.4rem);
+  }
+
+  .hero-desc {
+    max-width: 100%;
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 1.35rem;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-meta-badges {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .meta-badge {
+    min-width: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.35rem;
+    padding: 0.55rem 0.4rem;
+    border-radius: 12px;
+    font-size: 0.84rem;
+    line-height: 1.45;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .primary-btn {
+    max-width: 100%;
+    padding: 0.85rem 1.25rem;
+    font-size: 1.05rem;
+    white-space: normal;
+  }
+
+  .journey-view,
+  .quiz-view {
+    padding: 5rem 0.65rem 2rem;
+  }
+
+  .stepper-container {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .stepper-header {
+    gap: 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  .stepper-header > span:last-child {
+    white-space: nowrap;
+  }
+
+  .stepper-dots {
+    gap: 0.1rem;
+  }
+
+  .step-dot {
+    flex: 0 0 auto;
+    width: clamp(22px, 6.7vw, 28px);
+    height: clamp(22px, 6.7vw, 28px);
+    font-size: 0.72rem;
+  }
+
+  .stepper-line {
+    left: 12px;
+    right: 12px;
+  }
+
+  .station-manuscript,
+  .quiz-manuscript {
+    min-width: 0;
+    padding: 1.35rem 0.9rem;
+    border-radius: 15px;
+    overflow-wrap: anywhere;
+  }
+
+  .station-header-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .station-heading {
+    font-size: clamp(1.55rem, 7vw, 2.1rem);
+    overflow-wrap: anywhere;
+  }
+
+  .station-tagline {
+    font-size: 1.15rem;
+    line-height: 1.65;
+  }
+
+  .lead-text,
+  .genealogy {
+    font-size: 1.05rem;
+  }
+
+  .quran-quote {
+    padding: 0.9rem 0.7rem;
+    margin: 1.15rem 0;
+  }
+
+  .quran-quote .ayah {
+    font-size: 1.4rem;
+    overflow-wrap: anywhere;
+  }
+
+  .grid-2,
+  .wives-grid,
+  .signs-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grid,
+  .card-item,
+  .wife-card,
+  .step-card,
+  .sign-card,
+  .final-dua,
+  .share-highlight-chip {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .card-item {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .item-value,
+  .styled-list li {
+    font-size: 1rem;
+  }
+
+  .names-cloud {
+    gap: 0.45rem;
+  }
+
+  .name-tag {
+    padding: 0.35rem 0.75rem;
+    font-size: 1rem;
+  }
+
+  .poetry-card,
+  .hadith-box,
+  .final-dua {
+    padding: 1rem;
+  }
+
+  .verse {
+    font-size: 1.15rem;
+  }
+
+  .final-dua p {
+    font-size: 1.25rem;
+  }
+
+  .step-card {
+    gap: 0.65rem;
+    padding: 0.9rem;
+  }
+
+  .station-actions {
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+
+  .nav-buttons-group {
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .nav-buttons-group .sec-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    justify-content: center;
+    padding: 0.65rem 0.4rem;
+    font-size: 0.82rem;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .share-trigger-btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+    padding: 0.7rem 0.8rem;
+    white-space: normal;
+  }
+
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .modal-window {
+    width: 100%;
+    max-height: calc(100dvh - 1rem);
+    padding: 1.2rem 0.9rem;
+    border-radius: 14px;
+  }
+
+  .modal-actions-bar {
+    flex-direction: column;
+  }
+
+  .modal-actions-bar button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .share-card-render {
+    max-width: 100%;
+    padding: 1rem 0.7rem;
+    overflow-wrap: anywhere;
+  }
+
+  .card-inner-border {
+    padding: 0.85rem 0.6rem;
+  }
+
+  .card-title-text {
+    font-size: 1.25rem;
+  }
+
+  .card-bottom-footer {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+  }
+
+  .share-highlight-chip {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .quiz-heading {
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
+  }
+
+  .quiz-sub {
+    font-size: 0.95rem;
+  }
+
+  .quiz-question-box {
+    padding: 1rem 0.8rem;
+  }
+
+  .quiz-question-title {
+    font-size: 1.15rem;
+  }
+
+  .quiz-option-btn {
+    gap: 0.5rem;
+    padding: 0.85rem 0.75rem;
+    font-size: 1rem;
+  }
+
+  .quiz-progress-meta {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .result-score-circle {
+    padding: 0.8rem 1.5rem;
+  }
+
+  .result-title {
+    font-size: 1.5rem;
+  }
+
+  .result-buttons {
+    flex-direction: column;
+  }
+
+  .result-buttons button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-badge h1 {
+    font-size: 0.9rem;
+  }
+
+  #audioStatusText {
+    display: none;
+  }
+
+  .icon-btn {
+    padding: 0.38rem 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  .hero-meta-badges {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stepper-header {
+    font-size: 0.72rem;
+  }
+
+  .step-dot {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+
+@media (max-width: 380px) {
+  .islamic-header-ornament {
+    font-size: clamp(1rem, 5.2vw, 1.2rem);
+    white-space: nowrap;
+  }
+}
