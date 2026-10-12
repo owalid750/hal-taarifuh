@@ -1,27 +1,29 @@
 import { stationsData } from './data.js';
+import { quizQuestions } from './quizData.js';
 import { DesertScene } from './scene.js';
 import { ambientAudio } from './audio.js';
 import { openShareModal, closeShareModal, downloadCardImage, copyShareText } from './share.js';
+import confetti from 'canvas-confetti';
 
 class App {
   constructor() {
     this.currentStationIndex = 0;
     this.scene = null;
+
+    // Quiz state
+    this.quizIndex = 0;
+    this.quizScore = 0;
+    this.hasAnswered = false;
+
     this.init();
   }
 
   init() {
-    // 1. Initialize Three.js scene
     const canvasContainer = document.getElementById('webgl-canvas-container');
     this.scene = new DesertScene(canvasContainer);
 
-    // 2. Render Stepper Dots
     this.buildStepper();
-
-    // 3. Bind UI Events
     this.bindEvents();
-
-    // 4. Render first station
     this.renderStation(0);
   }
 
@@ -42,8 +44,7 @@ class App {
 
   bindEvents() {
     // Start Journey button
-    const startBtn = document.getElementById('startJourneyBtn');
-    startBtn.addEventListener('click', () => {
+    document.getElementById('startJourneyBtn').addEventListener('click', () => {
       this.startJourney();
     });
 
@@ -55,7 +56,7 @@ class App {
 
     // Restart button
     document.getElementById('restartJourneyBtn').addEventListener('click', () => {
-      this.goToStation(0);
+      this.showHeroView();
     });
 
     // Audio Toggle
@@ -73,16 +74,23 @@ class App {
       }
     });
 
-    // Previous & Next Station
+    // المحطة السابقة (على الشمال)
     document.getElementById('prevStationBtn').addEventListener('click', () => {
       if (this.currentStationIndex > 0) {
         this.goToStation(this.currentStationIndex - 1);
       }
     });
 
+    // المحطة التالية (على اليمين)
     document.getElementById('nextStationBtn').addEventListener('click', () => {
       if (this.currentStationIndex < stationsData.length - 1) {
+        // تشغيل صوت صلي على النبي
+        ambientAudio.playSalawat();
         this.goToStation(this.currentStationIndex + 1);
+      } else {
+        // عند انتهاء المحطات: فتح الاختبار التفاعلي
+        ambientAudio.playSalawat();
+        this.startQuiz();
       }
     });
 
@@ -112,12 +120,36 @@ class App {
       copyShareText(station);
     });
 
+    // Quiz events
+    document.getElementById('quizNextBtn').addEventListener('click', () => {
+      if (this.quizIndex < quizQuestions.length - 1) {
+        this.quizIndex++;
+        this.renderQuizQuestion();
+      } else {
+        this.showQuizResult();
+      }
+    });
+
+    document.getElementById('retakeQuizBtn').addEventListener('click', () => {
+      this.startQuiz();
+    });
+
+    document.getElementById('backToStationsBtn').addEventListener('click', () => {
+      this.startJourney();
+    });
+
     // Keyboard navigation
     window.addEventListener('keydown', (e) => {
-      if (document.getElementById('journeyView').classList.contains('active-view')) {
-        if (e.key === 'ArrowLeft') {
-          if (this.currentStationIndex < stationsData.length - 1) this.goToStation(this.currentStationIndex + 1);
-        } else if (e.key === 'ArrowRight') {
+      const isJourney = document.getElementById('journeyView').classList.contains('active-view');
+      if (isJourney) {
+        if (e.key === 'ArrowRight') {
+          // اليمين = التالي
+          if (this.currentStationIndex < stationsData.length - 1) {
+            ambientAudio.playSalawat();
+            this.goToStation(this.currentStationIndex + 1);
+          }
+        } else if (e.key === 'ArrowLeft') {
+          // الشمال = السابق
           if (this.currentStationIndex > 0) this.goToStation(this.currentStationIndex - 1);
         } else if (e.key === 'Escape') {
           closeShareModal();
@@ -129,24 +161,28 @@ class App {
   startJourney() {
     const hero = document.getElementById('heroView');
     const journey = document.getElementById('journeyView');
+    const quiz = document.getElementById('quizView');
     const restartBtn = document.getElementById('restartJourneyBtn');
 
     hero.classList.add('hidden-view');
     journey.classList.add('active-view');
+    quiz.style.display = 'none';
     restartBtn.style.display = 'inline-flex';
 
     this.goToStation(0);
-    ambientAudio.playChime();
+    ambientAudio.playSalawat();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   showHeroView() {
     const hero = document.getElementById('heroView');
     const journey = document.getElementById('journeyView');
+    const quiz = document.getElementById('quizView');
     const restartBtn = document.getElementById('restartJourneyBtn');
 
     journey.classList.remove('active-view');
     hero.classList.remove('hidden-view');
+    quiz.style.display = 'none';
     restartBtn.style.display = 'none';
 
     if (this.scene) {
@@ -159,14 +195,10 @@ class App {
     this.currentStationIndex = index;
     this.renderStation(index);
 
-    // Update Three.js scene position & theme
     if (this.scene) {
       this.scene.setStationProgress(index, stationsData.length);
     }
 
-    ambientAudio.playChime();
-
-    // Scroll smoothly to top of card
     const card = document.getElementById('stationManuscript');
     if (card) {
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -207,24 +239,136 @@ class App {
     prevBtn.style.pointerEvents = index === 0 ? 'none' : 'auto';
 
     if (index === stationsData.length - 1) {
-      nextBtn.innerHTML = `<span>تمت الرحلة المباركة ✦</span>`;
+      nextBtn.innerHTML = `<span>اختبار السيرة التفاعلي (١٥ سؤالاً) ✦</span>`;
       nextBtn.style.background = 'linear-gradient(135deg, #a97539 0%, #6c4627 100%)';
       nextBtn.style.color = '#fff';
     } else {
-      nextBtn.innerHTML = `<span>المحطة التالية ←</span>`;
+      nextBtn.innerHTML = `<span>المحطة التالية ◂</span>`;
       nextBtn.style.background = 'var(--sand-200)';
       nextBtn.style.color = 'var(--sand-900)';
     }
 
-    // Trigger manuscript animation
     const manuscript = document.getElementById('stationManuscript');
     manuscript.style.animation = 'none';
-    manuscript.offsetHeight; /* trigger reflow */
+    manuscript.offsetHeight;
     manuscript.style.animation = 'fadeInStation 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+  }
+
+  // --- QUIZ METHODS ---
+  startQuiz() {
+    this.quizIndex = 0;
+    this.quizScore = 0;
+    this.hasAnswered = false;
+
+    document.getElementById('journeyView').classList.remove('active-view');
+    document.getElementById('heroView').classList.add('hidden-view');
+    document.getElementById('quizView').style.display = 'flex';
+    document.getElementById('quizQuestionBox').style.display = 'block';
+    document.getElementById('quizResultScreen').style.display = 'none';
+
+    this.renderQuizQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuizQuestion() {
+    this.hasAnswered = false;
+    const q = quizQuestions[this.quizIndex];
+
+    document.getElementById('quizCounterText').textContent = `السؤال ${this.quizIndex + 1} من ${quizQuestions.length}`;
+    document.getElementById('quizScoreText').textContent = `الدرجة: ${this.quizScore} / ${quizQuestions.length}`;
+
+    const progressPercent = ((this.quizIndex + 1) / quizQuestions.length) * 100;
+    document.getElementById('quizProgressFill').style.width = `${progressPercent}%`;
+
+    document.getElementById('quizQuestionText').textContent = q.question;
+
+    const optionsContainer = document.getElementById('quizOptionsList');
+    optionsContainer.innerHTML = '';
+
+    // Hide feedback & next btn
+    document.getElementById('quizFeedbackBox').style.display = 'none';
+    document.getElementById('quizNextBtn').style.display = 'none';
+
+    q.options.forEach((optText, optIdx) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option-btn';
+      btn.innerHTML = `<span>${optText}</span><span class="opt-icon">⃝</span>`;
+      btn.addEventListener('click', () => {
+        this.handleQuizAnswer(optIdx, btn);
+      });
+      optionsContainer.appendChild(btn);
+    });
+  }
+
+  handleQuizAnswer(selectedIndex, clickedBtn) {
+    if (this.hasAnswered) return;
+    this.hasAnswered = true;
+
+    const q = quizQuestions[this.quizIndex];
+    const isCorrect = selectedIndex === q.correctAnswer;
+    const allOptionBtns = document.querySelectorAll('.quiz-option-btn');
+
+    // Disable all options
+    allOptionBtns.forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === q.correctAnswer) {
+        btn.classList.add('correct-opt');
+        btn.querySelector('.opt-icon').textContent = '✓';
+      }
+    });
+
+    if (isCorrect) {
+      this.quizScore++;
+      document.getElementById('quizScoreText').textContent = `الدرجة: ${this.quizScore} / ${quizQuestions.length}`;
+      confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
+    } else {
+      clickedBtn.classList.add('wrong-opt');
+      clickedBtn.querySelector('.opt-icon').textContent = '✕';
+    }
+
+    // Show instant feedback box & evidence
+    const feedbackBox = document.getElementById('quizFeedbackBox');
+    const feedbackStatus = document.getElementById('quizFeedbackStatus');
+    const feedbackEvidence = document.getElementById('quizFeedbackEvidence');
+
+    feedbackStatus.className = `feedback-status ${isCorrect ? 'correct' : 'wrong'}`;
+    feedbackStatus.textContent = isCorrect ? '✓ إجابة صحيحة، أحسنت!' : '✕ إجابة غير صحيحة';
+    feedbackEvidence.textContent = q.evidence;
+    feedbackBox.style.display = 'block';
+
+    // Show Next button
+    const nextBtn = document.getElementById('quizNextBtn');
+    if (this.quizIndex === quizQuestions.length - 1) {
+      nextBtn.innerHTML = `<span>عرض النتيجة النهائية ✦</span>`;
+    } else {
+      nextBtn.innerHTML = `<span>السؤال التالي ◂</span>`;
+    }
+    nextBtn.style.display = 'inline-flex';
+  }
+
+  showQuizResult() {
+    document.getElementById('quizQuestionBox').style.display = 'none';
+    document.getElementById('quizNextBtn').style.display = 'none';
+    const resultScreen = document.getElementById('quizResultScreen');
+    resultScreen.style.display = 'block';
+
+    document.getElementById('finalScoreVal').textContent = this.quizScore;
+
+    const msg = document.getElementById('finalScoreMsg');
+    if (this.quizScore === 15) {
+      msg.textContent = "ما شاء الله تبارك الله! درجة كاملة (15/15). معرفتك بسيرة النبي ﷺ استثنائية ونموذجية!";
+    } else if (this.quizScore >= 11) {
+      msg.textContent = "ممتاز جداً! لديك إلمام رائع بأدق تفاصيل سيرة الحبيب المصطفى ﷺ.";
+    } else if (this.quizScore >= 8) {
+      msg.textContent = "جيد جداً! تعرفت على الكثير من محطات السيرة، ويمكنك مراجعة المحطات لتعزيز معرفتك.";
+    } else {
+      msg.textContent = "بداية مباركة في التعرف على نبيك ﷺ، ندعوك لإعادة قراءة المحطات للتأمل في تفاصيل سيرته العطرة.";
+    }
+
+    confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } });
   }
 }
 
-// Instantiate on DOM load
 window.addEventListener('DOMContentLoaded', () => {
   new App();
 });

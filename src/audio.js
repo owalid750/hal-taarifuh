@@ -1,4 +1,4 @@
-// نظام توليد صوت هادئ مدمج باستخدام Web Audio API (مؤثر نسيم الصحراء وأصوات تفاعلية هادئة بدون الحاجة لملفات خارجية ثقيلة)
+// نظام توليد صوت هادئ لنسيم الصحراء + نطق عبارة "صلى الله عليه وسلم" تفاعلياً
 class AmbientAudioManager {
   constructor() {
     this.ctx = null;
@@ -15,19 +15,16 @@ class AmbientAudioManager {
     if (!AudioContext) return;
     this.ctx = new AudioContext();
 
-    // Gain node for overall ambient volume
     this.gainNode = this.ctx.createGain();
     this.gainNode.gain.setValueAtTime(0, this.ctx.currentTime);
     this.gainNode.connect(this.ctx.destination);
 
-    // Filter node for desert wind effect (bandpass)
     this.filterNode = this.ctx.createBiquadFilter();
     this.filterNode.type = 'lowpass';
     this.filterNode.frequency.setValueAtTime(260, this.ctx.currentTime);
     this.filterNode.Q.setValueAtTime(3.0, this.ctx.currentTime);
     this.filterNode.connect(this.gainNode);
 
-    // Buffer for soft pink noise (desert wind simulation)
     const bufferSize = this.ctx.sampleRate * 4;
     const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
     const output = noiseBuffer.getChannelData(0);
@@ -50,7 +47,6 @@ class AmbientAudioManager {
     this.noiseNode.connect(this.filterNode);
     this.noiseNode.start(0);
 
-    // Slow modulation to mimic gentle desert breeze
     this.modulateWind();
   }
 
@@ -85,22 +81,37 @@ class AmbientAudioManager {
     return !this.isMuted;
   }
 
-  playChime() {
-    if (this.isMuted || !this.ctx) return;
+  // صوت الصلاة على النبي ﷺ عند النقر على التالي
+  playSalawat() {
     try {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(523.25, this.ctx.currentTime); // C5
-      osc.frequency.exponentialRampToValueAtTime(659.25, this.ctx.currentTime + 0.3); // E5
-      gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.2);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(this.ctx.currentTime + 1.2);
+      // إطلاق نطق عربي نقي ومطمئن "صلى الله عليه وسلم"
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance("صلّى اللهُ عليهِ وسلّم");
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.9;
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
+      }
     } catch (e) {
-      console.warn("Audio chime failed:", e);
+      console.warn("Speech synthesis fallback:", e);
+    }
+
+    // إظهار نغمة دافئة متناسقة
+    if (this.ctx && this.ctx.state === 'running') {
+      try {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(554.37, this.ctx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.8);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.8);
+      } catch (err) {}
     }
   }
 }

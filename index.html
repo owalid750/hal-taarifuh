@@ -57,6 +57,10 @@
             <span>🎴 بطاقات:</span>
             <strong>مشاركة وتنزيل بطاقات تراثية</strong>
           </div>
+          <div class="meta-badge">
+            <span>✨ مسك الختام:</span>
+            <strong>اختبار تفاعلي (١٥ سؤالاً) مع النتيجة</strong>
+          </div>
         </div>
 
         <button id="startJourneyBtn" class="primary-btn">
@@ -100,19 +104,86 @@
             <!-- Injected from data.js -->
           </div>
 
+          <!-- زر التالي على اليمين والسابق على الشمال -->
           <div class="station-actions">
             <div class="nav-buttons-group">
-              <button id="prevStationBtn" class="sec-btn">
-                <span>→ المحطة السابقة</span>
-              </button>
               <button id="nextStationBtn" class="sec-btn" style="font-weight: bold; background: var(--sand-200);">
-                <span>المحطة التالية ←</span>
+                <span>المحطة التالية ◂</span>
+              </button>
+              <button id="prevStationBtn" class="sec-btn">
+                <span>▸ المحطة السابقة</span>
               </button>
             </div>
 
             <button id="openShareModalBtn" class="share-trigger-btn">
               <span>📜 شارك كـ كارد تراثي</span>
             </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 3. Quiz View (15 Questions Interactive Evaluation) -->
+    <section id="quizView" class="quiz-view" style="display: none;">
+      <article class="quiz-card-container">
+        <div class="quiz-manuscript">
+          <div class="quiz-header">
+            <div class="islamic-header-ornament" style="font-size: 1.8rem; margin: 0;">✦</div>
+            <h2 class="quiz-heading">اختبار «هل تعرفه؟» في سيرة النبي ﷺ</h2>
+            <p class="quiz-sub">اختبر معرفتك بما طالعته في الرحلة (١٥ سؤالاً مع تصحيح فوري والدليل)</p>
+          </div>
+
+          <!-- Progress bar -->
+          <div class="quiz-progress-bar-wrap">
+            <div class="quiz-progress-meta">
+              <span id="quizCounterText">السؤال ١ من ١٥</span>
+              <span id="quizScoreText">الدرجة الحالية: ٠ / ١٥</span>
+            </div>
+            <div class="quiz-progress-track">
+              <div id="quizProgressFill" class="quiz-progress-fill" style="width: 6.66%;"></div>
+            </div>
+          </div>
+
+          <!-- Question Body -->
+          <div id="quizQuestionBox" class="quiz-question-box">
+            <h3 id="quizQuestionText" class="quiz-question-title">نص السؤال يظهر هنا</h3>
+            <div id="quizOptionsList" class="quiz-options-list">
+              <!-- Rendered options dynamically -->
+            </div>
+
+            <!-- Instant Feedback Box -->
+            <div id="quizFeedbackBox" class="quiz-feedback-box" style="display: none;">
+              <div id="quizFeedbackStatus" class="feedback-status"></div>
+              <div class="feedback-evidence-title">📖 الدليل من السيرة:</div>
+              <p id="quizFeedbackEvidence" class="feedback-evidence-text"></p>
+            </div>
+          </div>
+
+          <!-- Quiz Action Buttons -->
+          <div class="quiz-actions-bar">
+            <button id="quizNextBtn" class="primary-btn" style="display: none; padding: 0.8rem 2.2rem; font-size: 1.1rem;">
+              <span>السؤال التالي ◂</span>
+            </button>
+          </div>
+
+          <!-- Final Score Screen -->
+          <div id="quizResultScreen" class="quiz-result-screen" style="display: none;">
+            <div class="result-badge">✨</div>
+            <h3 class="result-title">اكتمل الاختبار المبارك!</h3>
+            <div class="result-score-circle">
+              <span id="finalScoreVal">١٥</span>
+              <small>/ ١٥</small>
+            </div>
+            <p id="finalScoreMsg" class="result-evaluation-msg">ما شاء الله! معرفتك بسيرة الحبيب المصطفى ﷺ مباركة وعميقة.</p>
+            
+            <div class="result-buttons">
+              <button id="retakeQuizBtn" class="sec-btn">
+                <span>إعادة الاختبار ↺</span>
+              </button>
+              <button id="backToStationsBtn" class="primary-btn" style="padding: 0.8rem 2rem; font-size: 1.05rem;">
+                <span>مراجعة محطات الرحلة 📜</span>
+              </button>
+            </div>
           </div>
         </div>
       </article>
